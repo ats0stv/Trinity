@@ -1,0 +1,32 @@
+-----------------------------------------------------------
+    Scalable Computing Assignment 2 - Crach Hashes
+-----------------------------------------------------------
+
+Assignment Page:
+https://github.com/sftcd/cs7ns1/tree/master/assignments/practical3
+
+A sample Guide:
+https://labs.mwrinfosecurity.com/blog/a-practical-guide-to-cracking-password-hashes/
+
+Identify Hashes:
+https://www.onlinehashcrack.com/hash-identification.php#results
+
+Using JtR:
+https://www.tunnelsup.com/getting-started-cracking-password-hashes/
+https://www.openwall.com/john/doc/EXAMPLES.shtml
+
+JrT Repo:
+https://github.com/magnumripper/JohnTheRipper/blob/bleeding-jumbo/doc/INSTALL
+
+Setting up JrT on Ubuntu from Base:
+https://github.com/magnumripper/JohnTheRipper/blob/bleeding-jumbo/doc/INSTALL-UBUNTU
+
+
+
+Understand MD5-crypt:
+https://www.quora.com/How-do-you-crack-a-md5-Unix-hash
+https://www.vidarholen.net/contents/blog/?p=32
+
+MD5-crypt Structure:
+$<Algo Number>$<salt>$<hash>
+
