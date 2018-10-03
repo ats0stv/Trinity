@@ -1,4 +1,4 @@
-
+#!/bin/bash
 # Download the NVDIA Driver to local
 echo "Downloading the file"
 wget http://us.download.nvidia.com/XFree86/Linux-x86_64/367.128/NVIDIA-Linux-x86_64-367.128.run -O ./NVIDIA-Linux-x86_64-367.128.run
@@ -18,3 +18,13 @@ sudo /bin/bash ./NVIDIA-Linux-x86_64-367.128.run
 echo "Installing Hashcat"
 sudo apt install hashcat
 
+# Show the HASHCAT -I output
+hashcat -I
+
+cmd=`hashcat -I | grep "GPU"`
+cmdOp=`echo $?`
+if [ $cmdOp -eq 0 ]; then
+        echo "************************** All Good ********************************"
+else
+        echo "*************** Setup not completed properly ***********************"
+fi
