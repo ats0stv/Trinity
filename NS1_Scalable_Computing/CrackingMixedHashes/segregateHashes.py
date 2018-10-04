@@ -11,12 +11,11 @@ __email__ = "thundyia@tcd.ie"
 filename = "./input/thundyia1.hashes"
 newFilePrefix = "./segregatedHashes/thundyiaNew"
 
-formatDict = {"wierdhash":[],"noDollarHash":[]}
+formatDict = {"wierdhash":[],"descrypt":[]}
 with open(filename, "r") as inputFile:
 	for line in inputFile:
 		if '$' in line:
 			splittedLine = line.split('$')
-			# print splittedLine
 			if len(splittedLine) > 1:
 				if splittedLine[1] in formatDict:
 					formatDict[splittedLine[1]].append(line)
@@ -25,7 +24,7 @@ with open(filename, "r") as inputFile:
 			else:
 				formatDict["wierdHash"].append(line)
 		else:
-			formatDict["noDollarHash"].append(line)
+			formatDict["descrypt"].append(line)
 
 for key,value in formatDict.items():
 	print key +"  "+ str(len(value))
