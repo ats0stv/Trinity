@@ -65,6 +65,8 @@ def initializeOutputFiles():
 def processArgs():
     global OUTPUT_FILE
     global INPUT_DIR
+    global COMBINED_POT_FILE
+    global UNIQUE_PASSWORD_LIST
     parser = argparse.ArgumentParser()
     parser.add_argument("--dir", "-d", help="The directory containing the pot files to be merged", required=True)
     parser.add_argument("--outputFile", "-o", help="The path of the output file. If not specified file called (Should not be a hidden file) "
@@ -84,10 +86,10 @@ def segregatePasswordType(password):
     if unicode(password.strip()).isnumeric():
         PASSWORD_TYPE_DICT['num'].append(password)
         updatePasswordStats('num',passwordLength)
-    elif re.match(REGEX_LOWER.strip(), password):
+    elif re.match(REGEX_LOWER, password.strip()):
         PASSWORD_TYPE_DICT['lower'].append(password)
         updatePasswordStats('lower',passwordLength)
-    elif re.match(REGEX_UPPER.strip(), password):
+    elif re.match(REGEX_UPPER, password.strip()):
         PASSWORD_TYPE_DICT['upper'].append(password)
         updatePasswordStats('upper',passwordLength)
     elif unicode(password.strip()).isalnum():
