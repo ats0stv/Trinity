@@ -161,7 +161,7 @@ def writeLinesToFile(outputFile,lines):
 
 def appendToFile(outputFile, text):
     with open(outputFile, 'a') as outFile:
-        outFile.write(text);
+        outFile.write(text)
 
 
 def processInput():
