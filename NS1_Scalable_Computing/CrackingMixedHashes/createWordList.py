@@ -54,7 +54,7 @@ def emptyTheFile(filePath):
 
 def appendToFile(outputFile, text):
     with open(outputFile, 'a') as outFile:
-        print '---- ----- ----- ----- Writing {} to file {}'.format(text,outputFile)
+        # print '---- ----- ----- ----- Writing {} to file {}'.format(text,outputFile)
         outFile.write(text+'\n')
 
 def convertBasedOnMode(text, mode):
@@ -72,10 +72,10 @@ def processFile(masterFile, outputFile, convertMode, letterCount):
     global TOTAL_PROCESSED
     with open(masterFile,'r') as file:
         for line in file:
-            print 'Reading line {}'.format(line)
+            # print 'Reading line {}'.format(line)
             if len(line.strip()) == letterCount:
                 TOTAL_PROCESSED = TOTAL_PROCESSED + 1
-                print ' **** **** *** Word match for word {}'.format(line.strip())
+                # print ' **** **** *** Word match for word {}'.format(line.strip())
                 appendToFile(outputFile, convertBasedOnMode(line.strip(),convertMode))
 
 def main():
