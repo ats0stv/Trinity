@@ -32,6 +32,9 @@ PASSWORD_STATS_DICT = {'num':{'count':0,'percent':0,'minimum_length':100, 'maxim
                        'alnum':{'count':0,'percent':0,'minimum_length':100, 'maximum_length':0},
                        'other':{'count':0,'percent':0,'minimum_length':100, 'maximum_length':0}}
 TOTAL_PASSWORD_COUNT = 0
+PASSOWRD_LENGTH_DICT = {}
+BROKEN_LIST = []
+POT_LIST = []
 
 
 def formatOutputFileNames(outputFile):
@@ -81,8 +84,13 @@ def segregatePasswordType(password):
     global PASSWORD_TYPE_DICT
     global TOTAL_PASSWORD_COUNT
     global PASSWORD_STATS_DICT
+    global PASSOWRD_LENGTH_DICT
     TOTAL_PASSWORD_COUNT = TOTAL_PASSWORD_COUNT + 1
     passwordLength = len(password.strip())
+    if passwordLength in PASSOWRD_LENGTH_DICT:
+        PASSOWRD_LENGTH_DICT[passwordLength] = PASSOWRD_LENGTH_DICT[passwordLength] + 1
+    else:
+        PASSOWRD_LENGTH_DICT[passwordLength] = 1
     if unicode(password.strip()).isnumeric():
         PASSWORD_TYPE_DICT['num'].append(password)
         updatePasswordStats('num',passwordLength)
@@ -115,6 +123,8 @@ def computerPasswordTypePercentage():
         PASSWORD_STATS_DICT[key]['percent'] = percent
 
 def prepareOutputFromFile(inputFile,outputFile):
+    global BROKEN_LIST
+    global POT_LIST
     addedLines = []
     passwords = []
     with open(inputFile,'r') as inFile:
@@ -122,15 +132,19 @@ def prepareOutputFromFile(inputFile,outputFile):
             if ':' in line:
                 splittedLine = line.split(':')
                 segregatePasswordType(splittedLine[1])
-                if DESCRYPT_FILE_IDENTIFIER in str(inFile): # To handle the submitty issue
+                # if DESCRYPT_FILE_IDENTIFIER in str(inFile): # To handle the submitty issue
+                #     splittedLine[1] = splittedLine[1][:7].strip()
+                #     formattedLine = ' '.join(splittedLine)+'\n'
+                # else:
+                #     formattedLine = ' '.join(splittedLine)
+                if not re.match('^\$.*',line): # To handle the submitty issue
                     splittedLine[1] = splittedLine[1][:7].strip()
                     formattedLine = ' '.join(splittedLine)+'\n'
                 else:
-                    formattedLine = ' '.join(splittedLine)
-                if not line in addedLines: # to avoid any duplicates by mistake
-                    appendToFile(outputFile,formattedLine)
-                    appendToFile(COMBINED_POT_FILE,line)
-                    addedLines.append(line)
+                    formattedLine = ' '.join(splittedLine)# Handling the windows \r\n issue
+                line = line.replace('\r\n','\n')
+                POT_LIST.append(line)
+                BROKEN_LIST.append(str(formattedLine).strip()+'\n')
             else:
                 print "The line '"+ line + "' in file "+ inFile + " is not in pot format"
 
@@ -146,6 +160,14 @@ def writePasswordsByTypeToFile():
             writeLinesToFile(UNIQUE_PASSWORD_LIST,list(sorted(set(value))))
 
 def writeStatsToFile():
+    appendToFile(UNIQUE_PASSWORD_LIST,formatAsHeader('Char Count Stats'))
+    total = 0
+    for key, value in PASSOWRD_LENGTH_DICT.items():
+        total = total + value
+    appendToFile(UNIQUE_PASSWORD_LIST,"\nTotal -- "+str(total))
+    for key, value in sorted(PASSOWRD_LENGTH_DICT.iteritems(), key=lambda (k,v): (v,k),reverse=True):
+        appendToFile(UNIQUE_PASSWORD_LIST,"\n"+str(key)+" chars -- "+str(value)+" ({})".format(str(round(float(value)/total*100,2))))
+    appendToFile(UNIQUE_PASSWORD_LIST,formatAsHeader('Other Stats'))
     computerPasswordTypePercentage()
     for key, value in PASSWORD_STATS_DICT.items():
         appendToFile(UNIQUE_PASSWORD_LIST,"\n-- "+key)
@@ -174,6 +196,8 @@ def processInput():
                     filePath = os.path.join(root,file)
                     prepareOutputFromFile(filePath, OUTPUT_FILE)
         writePasswordsByTypeToFile()
+        writeLinesToFile(OUTPUT_FILE,list(set(BROKEN_LIST)))
+        writeLinesToFile(COMBINED_POT_FILE,list(set(POT_LIST)))
 
     except Exception as e:
         print e.message
