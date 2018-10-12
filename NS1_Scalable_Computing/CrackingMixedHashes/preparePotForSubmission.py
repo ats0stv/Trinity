@@ -81,32 +81,44 @@ def processArgs():
 
 
 def segregatePasswordType(password):
+    print 'Segreation start of {}'.format(password)
     global PASSWORD_TYPE_DICT
     global TOTAL_PASSWORD_COUNT
     global PASSWORD_STATS_DICT
     global PASSOWRD_LENGTH_DICT
     TOTAL_PASSWORD_COUNT = TOTAL_PASSWORD_COUNT + 1
     passwordLength = len(password.strip())
+    print 'Got length of {}'.format(password)
     if passwordLength in PASSOWRD_LENGTH_DICT:
         PASSOWRD_LENGTH_DICT[passwordLength] = PASSOWRD_LENGTH_DICT[passwordLength] + 1
     else:
         PASSOWRD_LENGTH_DICT[passwordLength] = 1
-    if unicode(password.strip()).isnumeric():
-        PASSWORD_TYPE_DICT['num'].append(password)
-        updatePasswordStats('num',passwordLength)
-    elif re.match(REGEX_LOWER, password.strip()):
-        PASSWORD_TYPE_DICT['lower'].append(password)
-        updatePasswordStats('lower',passwordLength)
-    elif re.match(REGEX_UPPER, password.strip()):
-        PASSWORD_TYPE_DICT['upper'].append(password)
-        updatePasswordStats('upper',passwordLength)
-    elif unicode(password.strip()).isalnum():
-        PASSWORD_TYPE_DICT['alnum'].append(password)
-        updatePasswordStats('alnum',passwordLength)
-    else:
-        PASSWORD_TYPE_DICT['other'].append(password)
-        updatePasswordStats('other',passwordLength)
-
+    print 'Char Length stats complete for {}'.format(password)
+    try:
+        if unicode(password.strip()).isnumeric():
+            print 'Inside num for {}'.format(password)
+            PASSWORD_TYPE_DICT['num'].append(password)
+            updatePasswordStats('num',passwordLength)
+        elif re.match(REGEX_LOWER, password.strip()):
+            print 'Inside lower for {}'.format(password)
+            PASSWORD_TYPE_DICT['lower'].append(password)
+            updatePasswordStats('lower',passwordLength)
+        elif re.match(REGEX_UPPER, password.strip()):
+            print 'Inside upper for {}'.format(password)
+            PASSWORD_TYPE_DICT['upper'].append(password)
+            updatePasswordStats('upper',passwordLength)
+        elif unicode(password.strip()).isalnum():
+            print 'Inside alnum for {}'.format(password)
+            PASSWORD_TYPE_DICT['alnum'].append(password)
+            updatePasswordStats('alnum',passwordLength)
+        else:
+            print 'Inside other for {}'.format(password)
+            PASSWORD_TYPE_DICT['other'].append(password)
+            updatePasswordStats('other',passwordLength)
+    except Exception as e:
+        print e
+        print 'Unable to parse the password {}'.format(password)
+    print 'Segregation complete for {}'.format(password)
 
 def updatePasswordStats(passwordType,passwordLength):
     PASSWORD_STATS_DICT[passwordType]['count'] = PASSWORD_STATS_DICT[passwordType]['count'] + 1
@@ -123,20 +135,20 @@ def computerPasswordTypePercentage():
         PASSWORD_STATS_DICT[key]['percent'] = percent
 
 def prepareOutputFromFile(inputFile,outputFile):
+    print 'Preparing outputfile from file {}'.format(inputFile)
     global BROKEN_LIST
     global POT_LIST
     addedLines = []
     passwords = []
     with open(inputFile,'r') as inFile:
+        print 'file {} opened'.format(inputFile)
         for line in inFile:
+            print 'Took the line {}'.format(line)
             if ':' in line:
                 splittedLine = line.split(':')
+                print 'Splitted the line {}'.format(line)
                 segregatePasswordType(splittedLine[1])
-                # if DESCRYPT_FILE_IDENTIFIER in str(inFile): # To handle the submitty issue
-                #     splittedLine[1] = splittedLine[1][:7].strip()
-                #     formattedLine = ' '.join(splittedLine)+'\n'
-                # else:
-                #     formattedLine = ' '.join(splittedLine)
+                print 'Segregation {}'.format(line)
                 if not re.match('^\$.*',line): # To handle the submitty issue
                     splittedLine[1] = splittedLine[1][:7].strip()
                     formattedLine = ' '.join(splittedLine)+'\n'
@@ -145,8 +157,10 @@ def prepareOutputFromFile(inputFile,outputFile):
                 line = line.replace('\r\n','\n')
                 POT_LIST.append(line)
                 BROKEN_LIST.append(str(formattedLine).strip()+'\n')
+                print 'Analyzing the line {}'.format(line)
             else:
                 print "The line '"+ line + "' in file "+ inFile + " is not in pot format"
+
 
 
 def writePasswordsByTypeToFile():
