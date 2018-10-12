@@ -8,8 +8,8 @@ __maintainer__ = "Arun Thundyill Saseendran"
 __email__ = "thundyia@tcd.ie"
 
 
-filename = "./input/thundyia1.hashes"
-newFilePrefix = "./segregatedHashes/thundyiaNew"
+filename = "shiva/abhishes.hashes"
+newFilePrefix = "./shiva/abhishes"
 
 formatDict = {"wierdhash":[],"descrypt":[]}
 with open(filename, "r") as inputFile:
