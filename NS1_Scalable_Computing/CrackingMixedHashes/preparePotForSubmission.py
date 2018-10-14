@@ -35,6 +35,8 @@ TOTAL_PASSWORD_COUNT = 0
 PASSOWRD_LENGTH_DICT = {}
 BROKEN_LIST = []
 POT_LIST = []
+formatDictOrig = {"wierdhash":[],"descrypt":[]}
+formatDictNew = {"wierdhash":[],"descrypt":[]}
 
 
 def formatOutputFileNames(outputFile):
@@ -81,44 +83,44 @@ def processArgs():
 
 
 def segregatePasswordType(password):
-    print 'Segreation start of {}'.format(password)
+    # print 'Segreation start of {}'.format(password)
     global PASSWORD_TYPE_DICT
     global TOTAL_PASSWORD_COUNT
     global PASSWORD_STATS_DICT
     global PASSOWRD_LENGTH_DICT
     TOTAL_PASSWORD_COUNT = TOTAL_PASSWORD_COUNT + 1
     passwordLength = len(password.strip())
-    print 'Got length of {}'.format(password)
+    # print 'Got length of {}'.format(password)
     if passwordLength in PASSOWRD_LENGTH_DICT:
         PASSOWRD_LENGTH_DICT[passwordLength] = PASSOWRD_LENGTH_DICT[passwordLength] + 1
     else:
         PASSOWRD_LENGTH_DICT[passwordLength] = 1
-    print 'Char Length stats complete for {}'.format(password)
+    # print 'Char Length stats complete for {}'.format(password)
     try:
         if unicode(password.strip()).isnumeric():
-            print 'Inside num for {}'.format(password)
+            # print 'Inside num for {}'.format(password)
             PASSWORD_TYPE_DICT['num'].append(password)
             updatePasswordStats('num',passwordLength)
         elif re.match(REGEX_LOWER, password.strip()):
-            print 'Inside lower for {}'.format(password)
+            # print 'Inside lower for {}'.format(password)
             PASSWORD_TYPE_DICT['lower'].append(password)
             updatePasswordStats('lower',passwordLength)
         elif re.match(REGEX_UPPER, password.strip()):
-            print 'Inside upper for {}'.format(password)
+            # print 'Inside upper for {}'.format(password)
             PASSWORD_TYPE_DICT['upper'].append(password)
             updatePasswordStats('upper',passwordLength)
         elif unicode(password.strip()).isalnum():
-            print 'Inside alnum for {}'.format(password)
+            # print 'Inside alnum for {}'.format(password)
             PASSWORD_TYPE_DICT['alnum'].append(password)
             updatePasswordStats('alnum',passwordLength)
         else:
-            print 'Inside other for {}'.format(password)
+            # print 'Inside other for {}'.format(password)
             PASSWORD_TYPE_DICT['other'].append(password)
             updatePasswordStats('other',passwordLength)
     except Exception as e:
         print e
         print 'Unable to parse the password {}'.format(password)
-    print 'Segregation complete for {}'.format(password)
+    # print 'Segregation complete for {}'.format(password)
 
 def updatePasswordStats(passwordType,passwordLength):
     PASSWORD_STATS_DICT[passwordType]['count'] = PASSWORD_STATS_DICT[passwordType]['count'] + 1
@@ -143,12 +145,19 @@ def prepareOutputFromFile(inputFile,outputFile):
     with open(inputFile,'r') as inFile:
         print 'file {} opened'.format(inputFile)
         for line in inFile:
-            print 'Took the line {}'.format(line)
+            if re.match('^sha256.*',line): # Convert back formatted pbkdf2 back to original
+                splits = line.split(':')
+                splits[0] = '$pbkdf2-'+splits[0]
+                firstJoin = '$'.join(splits[:(len(splits)-1)])
+                print 'Original - ' + line
+                line = firstJoin +':'+ splits[-1]
+                print 'Reformatted - '+ line
+            # print 'Took the line {}'.format(line)
             if ':' in line:
                 splittedLine = line.split(':')
-                print 'Splitted the line {}'.format(line)
+                # print 'Splitted the line {}'.format(line)
                 segregatePasswordType(splittedLine[1])
-                print 'Segregation {}'.format(line)
+                # print 'Segregation {}'.format(line)
                 if not re.match('^\$.*',line): # To handle the submitty issue
                     splittedLine[1] = splittedLine[1][:7].strip()
                     formattedLine = ' '.join(splittedLine)+'\n'
@@ -157,10 +166,9 @@ def prepareOutputFromFile(inputFile,outputFile):
                 line = line.replace('\r\n','\n')
                 POT_LIST.append(line)
                 BROKEN_LIST.append(str(formattedLine).strip()+'\n')
-                print 'Analyzing the line {}'.format(line)
+                # print 'Analyzing the line {}'.format(line)
             else:
-                print "The line '"+ line + "' in file "+ inFile + " is not in pot format"
-
+                print "The line '"+ line + "' in file "+ inputFile + " is not in pot format"
 
 
 def writePasswordsByTypeToFile():
@@ -174,6 +182,35 @@ def writePasswordsByTypeToFile():
             writeLinesToFile(UNIQUE_PASSWORD_LIST,list(sorted(set(value))))
 
 def writeStatsToFile():
+    for line in list(set(BROKEN_LIST)):
+        if re.match('^\$.*',line):
+            splittedLine = line.split('$')
+            if len(splittedLine) > 1:
+                if splittedLine[1] in formatDictNew:
+                    formatDictNew[splittedLine[1]].append(line)
+                else:
+                    formatDictNew[splittedLine[1]] = [line]
+            else:
+                formatDictNew["wierdHash"].append(line)
+        else:
+            formatDictNew["descrypt"].append(line)
+    appendToFile(UNIQUE_PASSWORD_LIST,formatAsHeader('Completed by Type'))
+    for key,value in formatDictNew.items():
+        if key == 'descrypt':
+            appendToFile(UNIQUE_PASSWORD_LIST,"\ndescrypt -- "+str(len(value)))
+        elif key == '1':
+            appendToFile(UNIQUE_PASSWORD_LIST,"\nMD5 -- "+str(len(value)))
+        elif key == '5':
+            appendToFile(UNIQUE_PASSWORD_LIST,"\nSHA256 -- "+str(len(value)))
+        elif key == '6':
+            appendToFile(UNIQUE_PASSWORD_LIST,"\nSHA512 -- "+str(len(value)))
+        elif key == 'pbkdf2-sha256':
+            appendToFile(UNIQUE_PASSWORD_LIST,"\npbkdf2-sha256 -- "+str(len(value)))
+        elif key == 'argon2i':
+            appendToFile(UNIQUE_PASSWORD_LIST,"\nargon2i -- "+str(len(value)))
+        else:
+            appendToFile(UNIQUE_PASSWORD_LIST,"\n"+key+" -- "+str(len(value)))
+
     appendToFile(UNIQUE_PASSWORD_LIST,formatAsHeader('Char Count Stats'))
     total = 0
     for key, value in PASSOWRD_LENGTH_DICT.items():
@@ -211,7 +248,7 @@ def processInput():
                     prepareOutputFromFile(filePath, OUTPUT_FILE)
         writePasswordsByTypeToFile()
         writeLinesToFile(OUTPUT_FILE,list(set(BROKEN_LIST)))
-        writeLinesToFile(COMBINED_POT_FILE,list(set(POT_LIST)))
+        writeLinesToFile(COMBINED_POT_FILE,list(sorted(set(POT_LIST))))
 
     except Exception as e:
         print e.message
