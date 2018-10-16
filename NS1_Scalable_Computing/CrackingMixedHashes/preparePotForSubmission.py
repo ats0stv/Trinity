@@ -33,6 +33,7 @@ PASSWORD_STATS_DICT = {'num':{'count':0,'percent':0,'minimum_length':100, 'maxim
                        'other':{'count':0,'percent':0,'minimum_length':100, 'maximum_length':0}}
 TOTAL_PASSWORD_COUNT = 0
 PASSOWRD_LENGTH_DICT = {}
+CHAR_FREQ = {}
 BROKEN_LIST = []
 POT_LIST = []
 formatDictOrig = {"wierdhash":[],"descrypt":[]}
@@ -143,20 +144,18 @@ def prepareOutputFromFile(inputFile,outputFile):
     addedLines = []
     passwords = []
     with open(inputFile,'r') as inFile:
-        print 'file {} opened'.format(inputFile)
         for line in inFile:
             if re.match('^sha256.*',line): # Convert back formatted pbkdf2 back to original
                 splits = line.split(':')
                 splits[0] = '$pbkdf2-'+splits[0]
                 firstJoin = '$'.join(splits[:(len(splits)-1)])
-                print 'Original - ' + line
+                # print 'Original - ' + line
                 line = firstJoin +':'+ splits[-1]
-                print 'Reformatted - '+ line
+                # print 'Reformatted - '+ line
             # print 'Took the line {}'.format(line)
             if ':' in line:
                 splittedLine = line.split(':')
                 # print 'Splitted the line {}'.format(line)
-                segregatePasswordType(splittedLine[1])
                 # print 'Segregation {}'.format(line)
                 if not re.match('^\$.*',line): # To handle the submitty issue
                     splittedLine[1] = splittedLine[1][:7].strip()
@@ -181,6 +180,32 @@ def writePasswordsByTypeToFile():
         else:
             writeLinesToFile(UNIQUE_PASSWORD_LIST,list(sorted(set(value))))
 
+def getPercentage(total,value):
+    percent = round((float(value)/total*100),2)
+    return str(value)+ " / {} ({}%)".format(str(total),str(percent))
+
+def calulateCharacterDensity(formatDict):
+    total = 0
+    uniqchars = ''
+    for key,value in formatDictNew.items():
+        for passwd in value:
+            data = passwd.strip()
+            data = data.split(' ')
+            data = data[1]
+            total = total + len(data)
+            for i in range(0,len(data)-1):
+                if data[i] in CHAR_FREQ:
+                    CHAR_FREQ[data[i]] = CHAR_FREQ[data[i]] + 1
+                else:
+                    CHAR_FREQ[data[i]] = 1
+    appendToFile(UNIQUE_PASSWORD_LIST,formatAsHeader('Character Frequency'))
+    for key, value in sorted(CHAR_FREQ.iteritems(), key=lambda (k,v): (v,k),reverse=True):
+        uniqchars = uniqchars + key
+        appendToFile(UNIQUE_PASSWORD_LIST,"\n{} -- ".format(key)+getPercentage(total,value))
+    appendToFile(UNIQUE_PASSWORD_LIST,"\n\nUnique CharacterSet -- {}".format(uniqchars))
+    appendToFile(UNIQUE_PASSWORD_LIST,"\n\nUnique CharacterSet Length -- {}".format(len(uniqchars)))
+
+
 def writeStatsToFile():
     for line in list(set(BROKEN_LIST)):
         if re.match('^\$.*',line):
@@ -194,25 +219,37 @@ def writeStatsToFile():
                 formatDictNew["wierdHash"].append(line)
         else:
             formatDictNew["descrypt"].append(line)
+    try:
+        calulateCharacterDensity(formatDictNew)
+    except Exception as e:
+        print e.message
     appendToFile(UNIQUE_PASSWORD_LIST,formatAsHeader('Completed by Type'))
+    total = 0
     for key,value in formatDictNew.items():
+        total = total + len(value)
+    for key,value in formatDictNew.items():
+        for password in value:
+            segregatePasswordType(password.split(' ')[1])
         if key == 'descrypt':
-            appendToFile(UNIQUE_PASSWORD_LIST,"\ndescrypt -- "+str(len(value)))
+            appendToFile(UNIQUE_PASSWORD_LIST,"\ndescrypt -- "+getPercentage(total,len(value)))
         elif key == '1':
-            appendToFile(UNIQUE_PASSWORD_LIST,"\nMD5 -- "+str(len(value)))
+            appendToFile(UNIQUE_PASSWORD_LIST,"\nMD5 -- "+getPercentage(total,len(value)))
         elif key == '5':
-            appendToFile(UNIQUE_PASSWORD_LIST,"\nSHA256 -- "+str(len(value)))
+            appendToFile(UNIQUE_PASSWORD_LIST,"\nSHA256 -- "+getPercentage(total,len(value)))
         elif key == '6':
-            appendToFile(UNIQUE_PASSWORD_LIST,"\nSHA512 -- "+str(len(value)))
+            appendToFile(UNIQUE_PASSWORD_LIST,"\nSHA512 -- "+getPercentage(total,len(value)))
         elif key == 'pbkdf2-sha256':
-            appendToFile(UNIQUE_PASSWORD_LIST,"\npbkdf2-sha256 -- "+str(len(value)))
+            appendToFile(UNIQUE_PASSWORD_LIST,"\npbkdf2-sha256 -- "+getPercentage(total,len(value)))
         elif key == 'argon2i':
-            appendToFile(UNIQUE_PASSWORD_LIST,"\nargon2i -- "+str(len(value)))
+            appendToFile(UNIQUE_PASSWORD_LIST,"\nargon2i -- "+getPercentage(total,len(value)))
         else:
-            appendToFile(UNIQUE_PASSWORD_LIST,"\n"+key+" -- "+str(len(value)))
+            appendToFile(UNIQUE_PASSWORD_LIST,"\n"+key+" -- "+getPercentage(total,len(value)))
+    appendToFile(UNIQUE_PASSWORD_LIST,"\n** Total ** "+" -- "+str(total))
 
     appendToFile(UNIQUE_PASSWORD_LIST,formatAsHeader('Char Count Stats'))
     total = 0
+
+
     for key, value in PASSOWRD_LENGTH_DICT.items():
         total = total + value
     appendToFile(UNIQUE_PASSWORD_LIST,"\nTotal -- "+str(total))
@@ -236,6 +273,28 @@ def appendToFile(outputFile, text):
     with open(outputFile, 'a') as outFile:
         outFile.write(text)
 
+def createPasswordWordList(brokenList):
+    file = './password.words'
+    file2 = './password4.words'
+    words = []
+    wordd4 = []
+    emptyTheFile(file)
+    emptyTheFile(file2)
+    for line in brokenList:
+        brokenSplit = line.split(' ')
+        words.append(brokenSplit[1])
+        try:
+            if len(brokenSplit[1].strip()) == 4:
+                wordd4.append(brokenSplit[1])
+            if len(brokenSplit[1].strip()) == 8:
+                wordd4.append(brokenSplit[1].strip()[:4]+'\n')
+                wordd4.append(brokenSplit[1].strip()[4:]+'\n')
+        except Exception as e:
+            print(e)
+    writeLinesToFile(file,list(set(words)))
+    writeLinesToFile(file2,list(set(wordd4)))
+
+
 
 def processInput():
     try:
@@ -243,7 +302,6 @@ def processInput():
             ROOT = root
             for file in files:
                 if ".pot" in file:
-                    print "Reading Pot file "+ str(file)
                     filePath = os.path.join(root,file)
                     prepareOutputFromFile(filePath, OUTPUT_FILE)
         writePasswordsByTypeToFile()
@@ -264,6 +322,7 @@ def main():
     processArgs()
     initializeOutputFiles()
     processInput()
+    createPasswordWordList(BROKEN_LIST)
     displaySuccessMessage()
 
 main()
