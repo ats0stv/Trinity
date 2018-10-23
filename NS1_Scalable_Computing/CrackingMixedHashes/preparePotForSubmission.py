@@ -306,6 +306,7 @@ def processInput():
                     prepareOutputFromFile(filePath, OUTPUT_FILE)
         writePasswordsByTypeToFile()
         writeLinesToFile(OUTPUT_FILE,list(set(BROKEN_LIST)))
+        print 'Password count {}'.format(str(len(set(BROKEN_LIST))))
         writeLinesToFile(COMBINED_POT_FILE,list(sorted(set(POT_LIST))))
 
     except Exception as e:
