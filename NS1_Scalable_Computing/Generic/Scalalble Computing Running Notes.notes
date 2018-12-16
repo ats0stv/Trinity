@@ -1,0 +1,341 @@
+-----------------------------------------------------------
+    Scalable Computing - Running Notes
+-----------------------------------------------------------
+
+-----------------------------------------------------------
+    Begin :: LB - 4 : 9/24 : 11 AM to 12 AM : W3 (Cairan)
+-----------------------------------------------------------
+
+# Dr. Ricardo Simon Carbajo - Head of Innovation and Development (ceADAR - Center of Applied Data Analytics Research)
+IOT (WSN) - Industry 4.0
+
+ceADAR - Funded by Enterprise Ireland (EI) and Industrial Development Authority (IDA)
+ceADAR get PS from Orgs and they help solve them using 
+Data Analytics, Big Data, Real Time Analytics, Advanced Machine Learning, Deep Learning, Block chain
+
+!! CeADAR - Bridges uni and Industry.
+?? TRL - T* Readines Level 
+
+Accenture, PWC, Siemens, Banks - Big, small and startup.
+
+8 Prototypes every 6 months and then handover to the Industry.
+Enables networking of member companies as well.
+
+!! IOT and WSN
+IOT comes from WSN.
+CPU + Memory + battery + Comms 
+OS - Tiny OS.
+
+Smart Dust - Air drop and then create swarm
+Could be locomotive as well.
+
+Desinged Efficient Routing Protocols - UMG and TinyHop
+
+Efficiency in terms of hops - battery capacity of the node etc.
+
+?? ACK - Writeback or writethough
+
+TinyTorrents (Centralized)
+Many nodes in the network have differnet pieces - BitTorrent
+TrackerNodes have information on what nodes from which.
+More of a Peer to Peer communication.
+Uses Distibuted Hash Table.
+
+
+TinyTorrents (Decentralized)
+Multihop Ad-hoc network
+
+IoT - Is more of one hop
+IOT -> Gateway -Internet-> Cloud
+
+
+Raspberry PI
+Galilo
+Arduino
+BeagleBone
+Teboli
+
+Comms can be - 3.5 HSPA, 4G or 5G or 822.14 (Bluetooth - Wifi etc.,)
+
+
+Vehicular - Peer Tracker Benefits (Cloud and Edge Deployments)
+Autonomous Vehicles - How the Decentralized Peer Trackers will benefit the autonomous Vehicels
+
+
+
+Industry 4.0 - Cyber Physical Systems
+Tech + Organization of Labour -> To push manufacturing into the new realm of optimization
+Efficient comm between machines and humans.
+Concept Born in Germany.
+
+
+
+!! Digital Twin - Create Digital Replicas of what you would build 
+!! Adittive Manufacturing - 3D Printing
+
+
+
+McKinsey - Next phase of digitizations
+-- New forms of HCI
+-- Advances Robotics and 3-D Printing
+-- Data Volumes, Computational Power and conncetivity
+-- Analytics and BI
+
+
+Predictive Correction:
+-- 	Continuos Data Collection: Industrial IoT
+	-- 	Sensors for like virbation etc, Networking (Wired or wireless) / Real Time Streaming, Sampling Rate, OnBoard Invasive, Battery Powered, Security
+-- 	Data Aggregation
+	-- 	DBs, What Data to store, In Premises vs Cloud
+--	Data Analysis
+	--	Data Preparation, Analysis, Data Modelling
+
+Predictive Maintenance - Machine Learning:
+Classification - Multiple Categorical Failures
+Regresstion - Time to Failure
+
+
+!! Lecturers
+-- Cairan
+-- Stephen
+-- Christian
+
+
+-----------------------------------------------------------
+    End :: LB - 4 : 9/24 : 11 AM to 12 AM : W3 (Keeron)
+-----------------------------------------------------------
+
+
+-----------------------------------------------------------
+    Begin: Vehicular - Peer Tracker Benefits (Cloud and Edge Deployments)
+Autonomous Vehicles - How the Decentralized Peer Trackers will benefit the autonomous Vehicels
+-----------------------------------------------------------
+
+Peer Tracker with Computing on the Access Layer - Useful for making decisions when split brain comes in, or brain fails or validating the brain.
+For example to not take a turn right from top of a bridge even when the brain says to do so - can be brain was hacked.
+A common vendor independent protocol will be of great help to achive this.
+
+
+-----------------------------------------------------------
+    End
+-----------------------------------------------------------
+
+-----------------------------------------------------------
+    Begin :: LB - 4 : 10/1 : 11 AM to 12 AM : W3 (Cairan)
+-----------------------------------------------------------
+
+Week before reading - Practise Quiz
+Week after reading - Quiz for grade
+
+
+GPU are made for a specific set of purposes. 
+More of application oriented processor wiring
+	Only if you write a code that uses GPU efficiently you can make use of GPU efficiently
+
+	if you buy a speific GPU for bit coin mining with SHA256, it is very much for that only - may not even work for Md5crypt.
+More specialized than CPU and are highly scalable.
+
+
+
+-----------------------------------------------------------
+    End :: LB - 4 : 10/1 : 11 AM to 12 AM : W3 (Cairan)
+-----------------------------------------------------------
+
+-----------------------------------------------------------
+    !! Missing Classes in Notebook
+-----------------------------------------------------------
+
+
+
+-----------------------------------------------------------
+    Begin :: LB - 8 : 10/10 : 11 AM to 12 AM : W4 (Andrew - Cairan)
+-----------------------------------------------------------
+
+!! Scaling up CPU/GPU Computing
+
+FLOPS - Floating Point Operations per second
+    - Commonly accepted
+        - 1 multiply accumulate (MAC)
+        - 1 fused multiply-add (FMA)
+        - Eg. 1.2 x 3.0 + 1.0
+        - 1 MAC per physical core per cycle
+
+Powerful Computers in the Planet
+    - TOP 500
+    - GREEN 500 - Top 500 energy efficient computers
+    - Use of more hardware - GPU and CPU
+        - Need tonnes of cooling
+        - High Power
+        - May have to desing data center differently
+
+- So better metric is FLOPS/Watt
+..# Fun Fact - Human uses around 107 watts per day - 2 light bulbs or 1/10 of kettle
+
+Moore's Law
+Doubling of transistor every year
+# Moore's Law hits the Quantum Wall at 5nm
+
+Dennard Scaling
+Transistor Power is proportional to the area
+# Already dead
+
+## Fun: CPU Melting 
+
+Koomey's Law
+Efficiency(FLOPS/watt) doubles every 1.57 years
+# Still not dead - will soon die (By 2048 it will hit the Landauer wall - physics)
+
+## Switching from silicon to graphine
+
+# Solution
+-- Use more computer!!!
+
+A massive super computer:
+ASPIRE @ NSCC
+    - 1288 nodes (2 sockets, 12 cores)
+    - 1 Peta FLOPS = 1e15
+    - 13 PB Storage - GPFS and Lustre File Systems
+    - 128 Accelerator Notes
+    - Infiniband - EDR(100Gbps)
+
+
+IBM Summit - Top 500 1st + and in GREEN 500
+
+
+Parallel Computing (Peta Scale Computing) - Programming Lang/Model
+    -- OpenCL - Open Library for Heterogenous Computing - Low Level - like C++
+    -- OpenVX - Used for graph structure computation - stream data - like 
+    -- Halide - Functional Programming / Describing graph structue computation pipeline - Super High Level - Photoshop plugins (Consumer Stuff)
+    -- Cray - Chapel Lang - Prog for Cray super computers
+    -- IBM X10 - Used for IBM super computers 
+        - Both Chapel and X10 have the notion at which your code is running - 
+            - can use decorators to pick data / do computation
+            - decorators for joining computations
+    -- Above language are highly abstracted from the hardware
+
+# david.greg@cs.tcd.ie
+
+Proper Usecases:
+-- cryptocurrency
+-- Oil and gas discovery
+-- Deep Learning
+
+For Parallelism:
+    - Dataset Splitting - No IO Wait
+    - Processing - So it computes at similar times 
+    - Utilization
+
+
+-----------------------------------------------------------
+    End :: LB - 8 : 10/10 : 11 AM to 12 AM : W4 (Andrew - Cairan)
+-----------------------------------------------------------
+
+
+
+-----------------------------------------------------------
+    Begin: LB - 8 : 10/15 : 11 AM to 12 AM : W5 (Cairan and Stephen)
+-----------------------------------------------------------
+
+InfernoBall
+Blob of JSON in a file
+Hashes
+Shares
+CipherText
+
+Shamir Secret Sharing
+
+Tradionally secret is f(0) --> When polynomial cross Y
+
+Polynomial curves over finite fields are more random
+Polynomial coefficients are 64 to 128 bits long.
+
+
+4 questions:
+1 hour
+1 A4 Cheat sheet
+Calc allowed
+Based on stuff already done
+4th question is openended
+
+True False - 14 points / 2 points each
+Short Answer - 20 points / 5 points each
+OpenCL - 15 Points
+9 points + 6 points
+Efficient process of designing an algo and how it is implemented
+Implementing a 
+
+
+
+Thursday - Scalable Stuff - CUDA
+
+
+Cloud (24 points)
+8 points (part a)
+16 points (part b)
+
+Start with 
+Locally
+remote
+Edge
+
+
+locality 
+security
+communications
+
+python 3.x
+pyopencl
+opencl driver
+
+-----------------------------------------------------------
+    End: LB - 8 : 10/15 : 11 AM to 12 AM : W5 (Cairan and Stephen)
+-----------------------------------------------------------
+
+-----------------------------------------------------------
+    Begin: LB - 8 : 10/18 : 2 PM to 4 PM : W5 (Cairan and Stephen and Andrew)
+-----------------------------------------------------------
+OpenCL Programming
+
+Plaform - A set of similar devices - CPUs, GPUs or othe
+Device - A CPU or GPU
+Queue - A queue of set of tasks
+    Tasks - __device__ -> C function
+    There is an OpenCL compiler just like C compiler
+    You can wait on a task output or on a queue output
+Buffers - Memory spaces - Can be used to synchronize
+    Can be declared just like an array.
+    Can choose where it is should be created - Like on DRAM of CPU or vRAM of GPU
+
+Create queue - Bind kernel to queues and push tasks to queues.
+
+OpenCL Runtime Controls all
+
+
+-----------------------------------------------------------
+    End: LB - 8 : 10/18 : 2 PM to 4 PM : W5 (Cairan and Stephen and Andrew)
+-----------------------------------------------------------
+
+
+-----------------------------------------------------------
+    Begin: LB - 8 : 11/15 : 2 PM to 4 PM : W8 (Stephen)
+-----------------------------------------------------------
+
+Session on Marking and deadlines for the report and survey
+
+DNS - 13 Root Servers
+Distributed over many systems
+
+1 Private Key - maintained by iCANN
+Key of Root Key - kept at California
+
+Curve 25519 - 2^255-19
+Look at DNS AS
+
+
+RPKI may help solve the vulnerabilities in BGP
+
+-----------------------------------------------------------
+    End: LB - 8 : 11/15 : 2 PM to 4 PM : W8 (Stephen)
+-----------------------------------------------------------
+
+    

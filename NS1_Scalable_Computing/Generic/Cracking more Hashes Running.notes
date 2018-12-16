@@ -1,0 +1,77 @@
+Assignment 3 - 2000 hashes
+Login:
+ssh -i ~/Downloads/private-keys-for-ubuntu-spot-instance.pem ubuntu@54.154.77.163
+
+Scp:
+scp -i ~/Downloads/private-keys-for-ubuntu-spot-instance.pem ~/Downloads/all ubuntu@54.154.77.163:/tmp/
+
+
+Sessions:
+./john --session=noDollar --wordlist=../wordlists/rockyou.txt --pot=projectnoDollar.pot ../wordlists/op/thundyiaNew-noDollarHash.hashes
+
+./john --session=1hash --wordlist=../wordlists/rockyou.txt --pot=project1hash.pot ../wordlists/op/thundyiaNew-1.hashes
+
+
+./john --session=5hash --wordlist=../wordlists/rockyou.txt --pot=project5hash.pot ../wordlists/op/thundyiaNew-5.hashes
+
+Z:\jrt\john179\run\john.exe --session=5hash --pot=Z:\Trinity\NS1_Scalable_Computing\CrackingMixedHashes\thundyia.pot Z:\Trinity\NS1_Scalable_Computing\CrackingMixedHashes\segregatedHashes\thundyiaNew-5.hashes -1 ?d ?1?1?1?1?1?1
+
+
+
+/Users/arun/git/john-1.8.0.9-jumbo-macosx_sse2/run/john --session=5hash --pot=/Users/arun/git/Trinity/NS1_Scalable_Computing/CrackingMixedHashes/thundyia.pot /Users/arun/git/Trinity/NS1_Scalable_Computing/CrackingMixedHashes/segregatedHashes/thundyiaNew-5.hashes -1=?d --mask=?1?1?1?1?1?1
+
+Z:\hashcat\hashcat64 -m 7400 -a 3 Z:\Trinity\NS1_Scalable_Computing\CrackingMixedHashes\segregatedHashes\thundyiaNew-5.hashes -1 ?d ?1?1?1?1?1?1?1?1?1?1?1?1 --increment-min 3 --increment-max 13 --increment --potfile-path=Z:\Trinity\NS1_Scalable_Computing\CrackingMixedHashes\thundyia.pot -D 1
+
+
+
+$1$XAMdzq6Q$e4Ni/.IIraJB86prlGb9k/:Charlie6
+https://software.intel.com/en-us/articles/opencl-drivers#deploy-section
+
+./hashcat -m 500 -i --increment-min=8 --increment-max=8 -o ~/hashcatout.txt -a 3 ~/Downloads/thundyia.hashes
+
+
+sudo ./hashcat -m 500 -o ~/hashcatout.txt -a 3 -1 "?l?u?d" -2 "?l?u?d?s" "?1?1?1?1?1?1?1?2" ~/Downloads/thundyia.hashes
+
+
+sudo ./hashcat -m 500 /tmp/thundyia.hashes -o ~/hashcatout.txt  --session s1 -a 3 ?1?1?1?1?1?1?1?2 -1 ?l?u?d -2 ?l?u?d?s
+
+
+
+sudo ./hashcat -m 500 /tmp/thundyia.hashes -o ~/hashcatout.txt  --session s2 -a 1 -r ./rules/best64.rule /tmp/all
+
+
+
+./cudaHashcat64.bin -m 7400 --session sha256 /home/ubuntu/NS1_Scalable_Computing/CrackingMixedHashes/segregatedHashes/thundyiaNew-5.hashes -a 3 /home/ubuntu/cudaHashcat-2.01/masks/rockyou-7-2592000.hcmask --increment-min 2 --increment-max 13 --increment -o /home/ubuntu/NS1_Scalable_Computing/CrackingMixedHashes/sha256.pot
+
+
+
+./cudaHashcat64.bin -m 7400 --session sha256 /home/ubuntu/NS1_Scalable_Computing/CrackingMixedHashes/segregatedHashes/thundyiaNew-5.hashes -a 0 -r /home/ubuntu/cudaHashcat-2.01/rules/rockyou-30000.rule /home/ubuntu/NS1_Scalable_Computing/CrackingMixedHashes/rockyou.txt -o /home/ubuntu/NS1_Scalable_Computing/CrackingMixedHashes/sha256.pot
+
+--potfile-path=/home/ubuntu/NS1_Scalable_Computing/CrackingMixedHashes/thundyia.pot
+
+
+./john --format=md5crypt --wordlist=../wordlists/all ../wordlists/thundyia.hashes --session=A --pot=projectA.pot --fork=2000
+
+
+
+
+./john --format=md5crypt --session=A --wordlist=../wordlists/rockyou.txt   --pot=projectA.pot -min-len=8 -max-len=8 ../wordlists/thundyia.hashes
+
+
+https://github.com/dwyl/english-words
+
+
+scp -i private-keys-for-ubuntu-spot-instance.pem ubuntu@54.246.134.42:/home/ubuntu/code/JohnTheRipper/run/projectA.pot .
+
+
+
+Use rules, but not as an amplifier. Basically this means you feed Hashcat base words through a pipe:
+$ ./hashcat64.bin --stdout wordlist.txt -r rules/best64.rule | ./hashcat64.bin -m 2500 test.hccapx
+
+Use princeprocessor. Same processes over a pipe:
+$ ./pp64.bin wordlist.txt | ./hashcat64.bin -m 2500 test.hccapx
+
+Sometimes it can make sense to use maskprocessor. Note this should be used only for very small keyspaces!
+$ ./mp64.bin ?d?d?d?d | ./hashcat64.bin -m 2500 test.hccapx
+
+Note: pipes work in Windows the same as they do in Linux.
