@@ -19,6 +19,7 @@ ARGS = None
 TITLE_DICT = {}
 logger = None
 
+
 def init():
     global TITLE_DICT
     global logger
@@ -28,12 +29,14 @@ def init():
         logging.basicConfig(filename=LOG_FILENAME, level=DEBUG_LEVEL,
                             format=LOG_FORMAT)
         logger = logging.getLogger('Parser')
-        logger.debug('Creating a quick ref title dict from the human readable title mappings')
+        logger.debug(
+            'Creating a quick ref title dict from the human readable title mappings')
         util = Utils()
         TITLE_DICT = util.createTitleDict(TITLE_KEY_DICT)
     except Exception as e:
         logger.error(f"Error in the init. Error = {e}")
         exit(1)
+
 
 def parseArgs():
     global ARGS
@@ -48,6 +51,7 @@ def parseArgs():
     except Exception as e:
         logger.error(f"Error in the parse logic. Error = {e}")
         exit(1)
+
 
 def readInput(filename):
     logger.debug('Reading input')
@@ -64,6 +68,7 @@ def readInput(filename):
         logger.error(f"Error in the file reading. Error = {e}")
         exit(2)
 
+
 def parseNames(inputNames):
     logger.debug('Parsing Names')
     nameParser = NameParserLogic(TITLE_DICT)
@@ -79,11 +84,13 @@ def parseNames(inputNames):
 
 def writeOutput(outputObjects):
     logger.info('Writing Output')
-    outputWriter = OutputWriter(ARGS.outputFile, ARGS.xml, ARGS.json, ARGS.pretty)
+    outputWriter = OutputWriter(
+        ARGS.outputFile, ARGS.xml, ARGS.json, ARGS.pretty)
     if not outputWriter.write(outputObjects):
         logger.error('Error in writing the output')
         print('Error in writing the output')
         exit(2)
+
 
 def main():
     print('** Stating application')

@@ -25,7 +25,7 @@ TITLE_KEY_DICT = {
     "Sir.": ['british knight', 'dame', 'sir']
 }
 
-#Output Settings
+# Output Settings
 XML_PRINT_TYPE = False
 XML_ROOT_NAME = "names"
 PRETTY_PRINT = True

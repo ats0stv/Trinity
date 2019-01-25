@@ -7,6 +7,7 @@ import argparse
 
 logger = logging.getLogger('InputReader')
 
+
 class InputReader:
     def __init__(self):
         logger.debug('Input Reader Init')

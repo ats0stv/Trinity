@@ -5,9 +5,10 @@
 import logging
 
 from Commons.Constants import (TITLE, FORENAME,
-                       SURNAME)
+                               SURNAME)
 
 logger = logging.getLogger('Name')
+
 
 class Name:
     def __init__(self, title, forename, surname):
@@ -18,5 +19,5 @@ class Name:
 
     def getNameDict(self):
         logger.debug(f'Returning name dict for name object with forename {self.forename}')
-        return {TITLE:self.title, FORENAME:self.forename,
-                SURNAME:self.surname}
+        return {TITLE: self.title, FORENAME: self.forename,
+                SURNAME: self.surname}
