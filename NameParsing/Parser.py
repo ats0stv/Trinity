@@ -94,11 +94,10 @@ def main():
     inputData = readInput(ARGS.inputFile)
     print(f'** Input Read from file {os.path.abspath(ARGS.inputFile)}')
     outputData = parseNames(inputData)
-    print('** Input Processed')
+    print('** Processing input')
     writeOutput(outputData)
-    print('** Output Rendered')
+    print('** Rendering output')
     print(f'Logs can be found in {os.path.abspath(LOG_FILENAME)}')
-
 
 
 if __name__ == "__main__":

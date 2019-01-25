@@ -29,6 +29,7 @@ class ArgsParser:
             return None
 
     def _createOutputDirIdenpotent(self, outputFile):
+        logger.debug(f'Creating directory idempotent for the file path {outputFile}')
         util = Utils()
         if outputFile:
             if util.createDirIdenpotent(outputFile):
@@ -40,6 +41,7 @@ class ArgsParser:
 
     def _validateArgs(self, args):
         util = Utils()
+        logger.debug('Validating arguments')
         if not util.isFile(args.inputFile):
             logger.error("Input file path not valid")
             print("Input file path not valid")

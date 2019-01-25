@@ -13,7 +13,7 @@ TITLE = "title"
 FORENAME = "forename"
 SURNAME = "surname"
 
-# Default Title if title could not be detemined
+# Default Title if title could not be determined
 DEFAULT_TITLE = ""
 
 # Lowercase list of possible title representations
