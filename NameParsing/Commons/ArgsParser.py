@@ -20,21 +20,26 @@ class ArgsParser:
         outputTypeGroup.add_argument('--xml', action='store_true')
         outputTypeGroup.add_argument('--json', action='store_true')
         args = parser.parse_args()
-        self._validateArgs(args)
-        return args
+        if self._validateArgs(args):
+            return args
+        else:
+            return None
 
     def _validateArgs(self, args):
         util = Utils()
         if not util.isFile(args.inputFile):
             logger.error("Input file path not valid")
             print("Input file path not valid")
-            exit(2)
-
-        if args.outputFile:
+            return False
+        elif args.outputFile:
             if not util.isFile(args.outputFile):
                 logger.error("Output file path not valid")
                 print("Output file path not valid")
-                exit(2)
+                return False
+            else:
+                return True
+        else:
+            return True
 
 
 
