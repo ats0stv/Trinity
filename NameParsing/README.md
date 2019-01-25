@@ -60,11 +60,11 @@ Francis Bacon (British knight)
 ```
 
 ## Examples
-** JSON Output on Console **
+**JSON Output on Console**
 ```bash
 python Parser.py -i ./sampleInput.txt --json --pretty
 ```
-Output
+**Output**
 ```
 ** Stating application
 ** Arguments parsed
@@ -111,11 +111,11 @@ Logs can be found in /Users/arun/git/Trinity/NameParsing/logs/Parser.log
 ```
 
 
-** XML Output on Console **
+**XML Output on Console**
 ```bash
 python Parser.py -i ./sampleInput.txt --xml --pretty
 ```
-Output
+**Output**
 ```
 ** Stating application
 ** Arguments parsed
@@ -163,14 +163,14 @@ Output
 ```
 
 
-** JSON Output on File Non Pretty**
-Creates the output directory if required
+**JSON Output on File Non Pretty**
+> Creates the output directory if required
 ```bash
 python Parser.py -i ./sampleInput.txt -o ./test/sample.json --json
 ```
 
-** XML Output on File Non Pretty**
-Creates the output directory if required
+**XML Output on File Non Pretty**
+> Creates the output directory if required
 ```bash
 python Parser.py -i ./sampleInput.txt -o ./test/sample.xml --xml
 ```
