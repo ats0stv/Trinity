@@ -1,3 +1,7 @@
+"""     
+    Model Class for Name
+"""
+
 import logging
 
 from Commons.Constants import (TITLE, FORENAME,
@@ -6,7 +10,7 @@ from Commons.Constants import (TITLE, FORENAME,
 logger = logging.getLogger('Name')
 
 class Name:
-    def __init__(self, title, forename, surname)
+    def __init__(self, title, forename, surname):
         logger.debug(f'Name init with title={title}, forename={forename}, surname={surname}')
         self.title = title
         self.forename = forename
