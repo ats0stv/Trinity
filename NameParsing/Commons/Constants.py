@@ -1,3 +1,6 @@
+"""     
+    Constants/Configuration File
+"""
 import logging
 
 # Logging configuration
@@ -13,7 +16,6 @@ SURNAME = "surname"
 # Default Title if title could not be detemined
 DEFAULT_TITLE = ""
 
-
 # Lowercase list of possible title representations
 TITLE_KEY_DICT = {
     "Mr.": ["male", "m", "man", "guy"],
@@ -22,3 +24,8 @@ TITLE_KEY_DICT = {
     "Prof.": ["professor", "prof"],
     "Sir.": ['british knight', 'dame', 'sir']
 }
+
+#Output Settings
+XML_PRINT_TYPE = False
+XML_ROOT_NAME = "names"
+PRETTY_PRINT = True
