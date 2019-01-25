@@ -174,3 +174,27 @@ Creates the output directory if required
 ```bash
 python Parser.py -i ./sampleInput.txt -o ./test/sample.xml --xml
 ```
+
+## App Code Structure
+```
+.
+├── Commons
+│   ├── ArgsParser.py
+│   ├── Constants.py
+│   ├── Utils.py
+│   └── __init__.py
+├── CoreLogic
+│   ├── NameParserLogic.py
+│   └── __init__.py
+├── IoOperations
+│   ├── InputReader.py
+│   ├── OutputWriter.py
+│   └── __init__.py
+├── Model
+│   └── Name.py
+├── Parser.py
+├── README.md
+├── requirements.txt
+├── sampleInput.txt
+└── setup.py
+```
