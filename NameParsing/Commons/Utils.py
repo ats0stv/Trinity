@@ -1,3 +1,6 @@
+"""     
+    Utilities Class
+"""
 import os
 import logging
 
@@ -19,3 +22,15 @@ class Utils:
                 titleDict[option] = title
         logger.debug('Returning title dict')
         return titleDict
+
+    def createDirIdenpotent(self, filename):
+        try:
+            logger.debug(f'Creating the directory for the filename {filename} if necessary')
+            path = os.path.abspath(filename)
+            directory = os.path.dirname(path)
+            if not os.path.isdir(directory):
+                os.makedirs(directory)
+            return True
+        except Exception as e:
+            logger.error(f'Unable to createDirIdenpotent. Error = {e}')
+            return False
