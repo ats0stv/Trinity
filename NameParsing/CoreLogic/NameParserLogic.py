@@ -1,8 +1,12 @@
+"""     
+    Class to parse human names
+"""
+
 import logging
 
 from nameparser import HumanName
 from Commons.Constants import DEFAULT_TITLE
-
+from Model.Name import Name
 logger = logging.getLogger('NameParserLogic')
 
 
@@ -13,12 +17,19 @@ class NameParserLogic:
 
 	def parseListOfNames(self, namesList):
 		try:
+			logger.info('Parsing the provided list of names to Objects')
+			parsedNameList = []
 			for name in namesList:
 				humanName = HumanName(name)
 				title, surname, forename = self.processHumanName(humanName)
-				print(f'Title = {title}, Surname = {surname}, Forename = {forename}')
+				logger.debug(f'Title = {title}, Surname = {surname}, Forename = {forename}')
+				parsedName = Name(title, forename, surname)
+				parsedNameList.append(parsedName.getNameDict())
+			logger.info('Parsing completed')
+			return parsedNameList
 		except Exception as e:
 			logger.error(f'Error in parsing the input names. Error = {e}')
+			return None
 
 	def processHumanName(self, humanName):
 		forename = humanName.first
