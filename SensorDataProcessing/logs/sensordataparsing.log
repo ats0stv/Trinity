@@ -1,0 +1,4 @@
+2019-03-01 16:41:40,792 - root - DEBUG - Loggers initialized
+2019-03-01 16:41:40,792 - root - DEBUG - Log Configuration Completed
+2019-03-01 16:41:40,792 - root - INFO - Retrieved the sensor data. Processing it to CSV
+2019-03-01 16:41:40,803 - root - INFO - CSV file Outputs/sensorData.csv created successfully from the phone sensor data
