@@ -31,4 +31,4 @@ LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 DEBUG_LEVEL = logging.DEBUG
 
 # Google Creds
-CREDS_FILE = '/Users/arun/git/SentimentAnalysisGCP/gcpCreds.json'
+CREDS_FILE = '/Users/arun/git/Trinity/SentimentAnalysisGCP/gcpCreds.json'
